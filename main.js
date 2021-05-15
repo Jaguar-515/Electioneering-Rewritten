@@ -326,13 +326,13 @@ client.on("message", (msg)=>{
 		}
 	
 		if(command == "regionmap" || command == "regionsmap"){
-			msg.channel.send("__Regions Map__", {files: ["./RegionMap.png"]})
+			msg.channel.send("__Regions Map__", {files: ["./assets/RegionMap.png"]})
 		}
 		if(command == "statemap" || command == "statesmap"){
-			msg.channel.send("__State Map__", {files: ["./statemap.png"]})
+			msg.channel.send("__State Map__", {files: ["./assets/statemap.png"]})
 		}
 		if (command == "incomemap"){
-			msg.channel.send("__Income Map__", {files: ["./IncomeMap.png"]})
+			msg.channel.send("__Income Map__", {files: ["./assets/IncomeMap.png"]})
 		}
 		if (command == "colors"){
 			msg.channel.send("__Colors__\n**Red**\n**Blue**\n**Green**\n**Yellow**\n**Gray**\n**Pink**\n**Purple**\n**Brown**");
@@ -493,7 +493,7 @@ class Game{
 		this.canvas = createCanvas(612, 384);
 		this.ctx = this.canvas.getContext('2d');
 		this.blankstatefill = null;
-		loadImage("./blankstatefill.png").then((img)=>{
+		loadImage("./assets/blankstatefill.png").then((img)=>{
 			this.blankstatefill = img;
 			this.ctx.drawImage(this.blankstatefill, 0, 0, img.width, img.height);
 })
