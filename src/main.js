@@ -1,8 +1,8 @@
 console.log("Starting Electioneering Bot...");
 
 const Discord = require("discord.js");
-const config = require("./config.json");
-const data = require("./data.json");
+const config = require("../config.json");
+const data = require("../data.json");
 const client = new Discord.Client();
 const { createCanvas, loadImage } = require('canvas')
 
