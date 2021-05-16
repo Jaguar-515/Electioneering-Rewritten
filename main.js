@@ -314,7 +314,7 @@ client.on("message", (msg)=>{
 		}
 	
 		if(command == "version"){
-			msg.reply("Electioneering is on version **0.2.2**.")
+			msg.reply("Electioneering Rewritten is on version **1.0.0**.")
 		}
 	
 		if(command == "server"){
