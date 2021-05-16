@@ -4,7 +4,7 @@ const Discord = require("discord.js");
 const config = require("../config.json");
 const data = require("../data.json");
 const client = new Discord.Client();
-const { createCanvas, loadImage } = require('canvas')
+const { createCanvas, loadImage } = require('canvas');
 
 
 let activegames = {};
@@ -219,11 +219,11 @@ client.on("message", (msg)=>{
 	if(msg.content.substring(0, 2) == "e?" || msg.content.substring(0, 2) == "E?" ){
 		const args = msg.content.slice(config.prefix.length).trim().split(/ +/);
 		const command = args.shift().toLowerCase();
-
+		
 		for(let i = 0; i < args.length; i++){
 			args[i] = args[i].toLowerCase();
 		}
-	
+
 		if(command == "create"){
 			if(msg.guild == null){
 				msg.reply("You cannot create a game in DM!");
