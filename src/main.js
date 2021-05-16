@@ -1,11 +1,11 @@
 console.log("Starting Electioneering Bot...");
 
 const Discord = require("discord.js");
+const fs = require("fs")
 const config = require("../config.json");
 const data = require("../data.json");
 const client = new Discord.Client();
 const { createCanvas, loadImage } = require('canvas');
-
 
 let activegames = {};
 let activeplayers = {};
@@ -69,6 +69,20 @@ const states = [
 ]
 
 client.login(config.botkey);
+
+let commands = []
+
+// reads through the commands folder specify commands for the bot
+fs.readdir("./src/commands", (err, files) => {
+	if (err) {
+		console.error("Couldn't read commands folder!")
+	}
+
+	files.forEach((file) => {
+		let newFile = file.replace(".js", "")
+		commands.push(newFile)
+	})
+})
 
 client.on("message", (msg)=>{
 	if(msg.guild == null){
@@ -216,14 +230,25 @@ client.on("message", (msg)=>{
 			return;
 		}
 	}
+
 	if(msg.content.substring(0, 2) == "e?" || msg.content.substring(0, 2) == "E?" ){
 		const args = msg.content.slice(config.prefix.length).trim().split(/ +/);
 		const command = args.shift().toLowerCase();
-		
+	
 		for(let i = 0; i < args.length; i++){
 			args[i] = args[i].toLowerCase();
 		}
 
+		let commandFile = "./src/commands/" + command + ".js"
+		if (!fs.existsSync(commandFile)) {
+			return msg.reply("That command doesn't exist!")
+		}
+
+		commandFile = "./commands/" + command
+		let commandFunction = require(commandFile)
+		return commandFunction.command.execute(msg)
+
+		/*
 		if(command == "create"){
 			if(msg.guild == null){
 				msg.reply("You cannot create a game in DM!");
@@ -246,10 +271,7 @@ client.on("message", (msg)=>{
 			}
 		}
 	
-		if(command == "modes" || command == "mode"){
-			msg.channel.send("**__FPTP__**: The real-life system of U.S. Presidential elections.\n**__InstantRunoff__**: If nobody hits 270 electoral votes, the person with the fewest votes is eliminated. This repeats until someone hits 270.\n**__PopularVote__**: The person with the most votes wins.\n**__PopularVoteIRV__**: If nobody recieves 50% of the votes, the person with the fewest votes is eliminated. This is repeated until someone hits 50%.\n")
-		}
-	
+
 		if(command == "join"){
 			if(msg.guild != null && activegames[msg.channel.id] != null){
 				if(activegames[msg.channel.id].players.hasOwnProperty(msg.author.id)){
@@ -312,19 +334,7 @@ client.on("message", (msg)=>{
 			}
 			
 		}
-	
-		if(command == "version"){
-			msg.reply("Electioneering Rewritten is on version **1.0.0**.")
-		}
-	
-		if(command == "server"){
-			msg.reply("__Join the server to report bugs, suggest features, and play the game with others!__\n https://discord.gg/mvR2fEwntu")
-		}
-	
-		if(command == "help"){
-			msg.reply("coming soon...");
-		}
-	
+		
 		if(command == "regionmap" || command == "regionsmap"){
 			msg.channel.send("__Regions Map__", {files: ["./assets/RegionMap.png"]})
 		}
@@ -333,9 +343,6 @@ client.on("message", (msg)=>{
 		}
 		if (command == "incomemap"){
 			msg.channel.send("__Income Map__", {files: ["./assets/IncomeMap.png"]})
-		}
-		if (command == "colors"){
-			msg.channel.send("__Colors__\n**Red**\n**Blue**\n**Green**\n**Yellow**\n**Gray**\n**Pink**\n**Purple**\n**Brown**");
 		}
 		if(command == "state"){
 			if(args.length != 0 && Validstate(args[0].toUpperCase()) && activegames.hasOwnProperty(msg.channel.id) && activegames[msg.channel.id].finished){
@@ -395,6 +402,7 @@ client.on("message", (msg)=>{
 				}
 			}
 		}	
+		*/
 	}
 });
 
@@ -1069,7 +1077,6 @@ class Game{
 		}
 	}
 }
-
 class Player{
 	constructor(playerid_, name_, color_){
 		this.name = name_;
